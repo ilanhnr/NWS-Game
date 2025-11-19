@@ -5,28 +5,40 @@
  * 
  *****************************************************************************/
 
-#include <SDL3/SDL.h>
+#include "SDL.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
     SDL_Window *window = NULL;
 
-    if(SDL_Init(SDL_INIT_VIDEO) != 0){
-        SDL_Log("ERROR : Initialization SDL > %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
+    // Initialisation de SDL2
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        SDL_Log("ERROR: Initialization SDL > %s\n", SDL_GetError());
+        return EXIT_FAILURE;
     }
 
-    window = SDL_CreateWindow("NWS Game", 800, 600, 0);
+    // Création d'une fenêtre SDL2
+    window = SDL_CreateWindow(
+        "NWS Game",                   // Titre
+        SDL_WINDOWPOS_CENTERED,       // Position X
+        SDL_WINDOWPOS_CENTERED,       // Position Y
+        800,                          // Largeur
+        600,                          // Hauteur
+        SDL_WINDOW_SHOWN              // Flags
+    );
 
-    if(window == NULL){
+    if (window == NULL) {
         SDL_Log("ERROR : Window creation failed > %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
+        SDL_Quit();
+        return EXIT_FAILURE;
     }
 
-    SDL_Delay(5000); // Milliseconde
 
+    SDL_DestroyWindow(window); // Nettoyage de la fenêtre
     SDL_Quit();
 
     return EXIT_SUCCESS;
 }
+
+// gcc src/main.c -I include -L lib -lmingw32 -lSDL2main -lSDL2 -o bin/NWS-Game.exe
